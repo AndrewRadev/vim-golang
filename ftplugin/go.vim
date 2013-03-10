@@ -43,6 +43,12 @@ command! -buffer -nargs=* -complete=customlist,go#complete#Package ImportAs call
 map <buffer> <LocalLeader>f :Import fmt<CR>
 map <buffer> <LocalLeader>F :Drop fmt<CR>
 
+" Function text object
+onoremap <buffer> af :<c-u>call go#textobj#Function('a')<cr>
+xnoremap <buffer> af :<c-u>call go#textobj#Function('a')<cr>
+onoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
+xnoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
+
 let b:did_ftplugin = 1
 
 " vim:ts=4:sw=4:et
