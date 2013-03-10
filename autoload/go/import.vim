@@ -1,48 +1,4 @@
-" Copyright 2011 The Go Authors. All rights reserved.
-" Use of this source code is governed by a BSD-style
-" license that can be found in the LICENSE file.
-"
-" import.vim: Vim commands to import/drop Go packages.
-"
-" This filetype plugin adds three new commands for go buffers:
-"
-"   :Import {path}
-"
-"       Import ensures that the provided package {path} is imported
-"       in the current Go buffer, using proper style and ordering.
-"       If {path} is already being imported, an error will be
-"       displayed and the buffer will be untouched.
-"
-"   :ImportAs {localname} {path}
-"
-"       Same as Import, but uses a custom local name for the package.
-"
-"   :Drop {path}
-"
-"       Remove the import line for the provided package {path}, if
-"       present in the current Go buffer.  If {path} is not being
-"       imported, an error will be displayed and the buffer will be
-"       untouched.
-"
-" In addition to these commands, there are also two shortcuts mapped:
-"
-"   \f  -  Runs :Import fmt
-"   \F  -  Runs :Drop fmt
-"
-" The backslash is the default maplocalleader, so it is possible that
-" your vim is set to use a different character (:help maplocalleader).
-"
-if exists("b:did_ftplugin_go_import")
-    finish
-endif
-
-command! -buffer -nargs=? -complete=customlist,go#complete#Package Drop call s:SwitchImport(0, '', <f-args>)
-command! -buffer -nargs=1 -complete=customlist,go#complete#Package Import call s:SwitchImport(1, '', <f-args>)
-command! -buffer -nargs=* -complete=customlist,go#complete#Package ImportAs call s:SwitchImport(1, <f-args>)
-map <buffer> <LocalLeader>f :Import fmt<CR>
-map <buffer> <LocalLeader>F :Drop fmt<CR>
-
-function! s:SwitchImport(enabled, localname, path)
+function! go#import#Switch(enabled, localname, path)
     let view = winsaveview()
     let path = a:path
 
@@ -221,13 +177,10 @@ function! s:SwitchImport(enabled, localname, path)
 
     " Put buffer back where it was.
     call winrestview(view)
-
 endfunction
 
 function! s:Error(s)
     echohl Error | echo a:s | echohl None
 endfunction
-
-let b:did_ftplugin_go_import = 1
 
 " vim:ts=4:sw=4:et

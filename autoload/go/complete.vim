@@ -69,3 +69,5 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
   endfor
   return sort(keys(ret))
 endfunction
+
+" vim:ts=4:sw=4:et

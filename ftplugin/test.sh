@@ -4,7 +4,9 @@
 # Use of this source code is governed by a BSD-style
 # license that can be found in the LICENSE file.
 #
-# Tests for import.vim.
+# Tests for ftplugin/go.vim
+#
+# TODO: rewrite using Vimrunner
 
 cd $(dirname $0)
 
@@ -26,7 +28,7 @@ fail=0
 # Pattern is a PCRE expression that will match across lines.
 test_one() {
   echo 2>&1 -n "$1: "
-  vim -e -s -u /dev/null -U /dev/null --noplugin -c "source import.vim" \
+  vim -e -s -u /dev/null -U /dev/null --noplugin -c "source go.vim" \
     -c "$1" -c 'wq! test.go' base.go
   # ensure blank lines are treated correctly
   if ! gofmt test.go | cmp test.go; then
