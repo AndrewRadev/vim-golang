@@ -81,5 +81,3 @@ endfunction
 
 command! -nargs=* -range -complete=customlist,go#complete#Package Godoc :call s:Godoc(<q-args>)
 nnoremap <silent> <Plug>(godoc-keyword) :<C-u>call <SID>Godoc('')<CR>
-
-" vim:ts=4:sw=4:et

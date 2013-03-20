@@ -32,12 +32,12 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
   let dirs = []
 
   if executable('go')
-      let goroot = substitute(system('go env GOROOT'), '\n', '', 'g')
-      if v:shell_error
-          echo '\'go env GOROOT\' failed'
-      endif
+    let goroot = substitute(system('go env GOROOT'), '\n', '', 'g')
+    if v:shell_error
+      echo '\'go env GOROOT\' failed'
+    endif
   else
-      let goroot = $GOROOT
+    let goroot = $GOROOT
   endif
 
   if len(goroot) != 0 && isdirectory(goroot)
@@ -46,12 +46,12 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
 
   let workspaces = split($GOPATH, ':')
   if workspaces != []
-      let dirs += workspaces
+    let dirs += workspaces
   endif
 
   if len(dirs) == 0
-      " should not happen
-      return []
+    " should not happen
+    return []
   endif
 
   let ret = {}
@@ -69,5 +69,3 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
   endfor
   return sort(keys(ret))
 endfunction
-
-" vim:ts=4:sw=4:et

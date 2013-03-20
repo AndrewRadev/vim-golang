@@ -9,7 +9,7 @@
 " - general line splits (line ends in an operator)
 
 if exists("b:did_indent")
-    finish
+  finish
 endif
 let b:did_indent = 1
 
@@ -63,5 +63,3 @@ function! GoIndent(lnum)
 
   return ind
 endfunction
-
-" vim:ts=4:sw=4:et

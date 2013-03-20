@@ -16,5 +16,3 @@ HiLink godocTitle Title
 delcommand HiLink
 
 let b:current_syntax = "godoc"
-
-" vim:ts=4 sts=2 sw=2:

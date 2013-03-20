@@ -33,7 +33,7 @@
 " your vim is set to use a different character (:help maplocalleader).
 "
 if exists("b:did_ftplugin")
-    finish
+  finish
 endif
 
 command! -buffer Fmt call go#format#Run()
@@ -50,5 +50,3 @@ onoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
 xnoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
 
 let b:did_ftplugin = 1
-
-" vim:ts=4:sw=4:et
