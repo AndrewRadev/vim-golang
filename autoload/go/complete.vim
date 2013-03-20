@@ -5,7 +5,7 @@
 " This file provides a utility function that performs auto-completion of
 " package names, for use by other commands.
 
-let s:goos = $GOOS
+let s:goos   = $GOOS
 let s:goarch = $GOARCH
 
 if len(s:goos) == 0
@@ -56,15 +56,18 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
 
   let ret = {}
   for dir in dirs
-    let root = expand(dir . '/pkg/' . s:goos . '_' . s:goarch)
-    for i in split(globpath(root, a:ArgLead.'*'), "\n")
-      if isdirectory(i)
-        let i .= '/'
-      elseif i !~ '\.a$'
-        continue
-      endif
-      let i = substitute(substitute(i[len(root)+1:], '[\\]', '/', 'g'), '\.a$', '', 'g')
-      let ret[i] = i
+    let roots = split(expand(dir . '/pkg/' . s:goos . '_' . s:goarch), "\n")
+
+    for root in roots
+      for i in split(globpath(root, a:ArgLead.'*'), "\n")
+        if isdirectory(i)
+          let i .= '/'
+        elseif i !~ '\.a$'
+          continue
+        endif
+        let i = substitute(substitute(i[len(root)+1:], '[\\]', '/', 'g'), '\.a$', '', 'g')
+        let ret[i] = i
+      endfor
     endfor
   endfor
   return sort(keys(ret))
