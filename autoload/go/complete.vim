@@ -34,7 +34,7 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
   if executable('go')
     let goroot = substitute(system('go env GOROOT'), '\n', '', 'g')
     if v:shell_error
-      echo '\'go env GOROOT\' failed'
+      echo '''go env GOROOT'' failed'
     endif
   else
     let goroot = $GOROOT
