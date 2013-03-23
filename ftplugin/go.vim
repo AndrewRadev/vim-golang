@@ -49,4 +49,19 @@ xnoremap <buffer> af :<c-u>call go#textobj#Function('a')<cr>
 onoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
 xnoremap <buffer> if :<c-u>call go#textobj#Function('i')<cr>
 
+" Jumping to start of next/previous function
+" Note: [] and ][ should already be working fine for Go
+nnoremap <buffer> [[ :<c-u>call <SID>Section('b', 'n')<cr>
+nnoremap <buffer> ]] :<c-u>call <SID>Section('', 'n')<cr>
+xnoremap <buffer> [[ :<c-u>call <SID>Section('b', 'v')<cr>
+xnoremap <buffer> ]] :<c-u>call <SID>Section('', 'v')<cr>
+
+function! s:Section(flags, mode)
+  if a:mode == 'v'
+    normal! gv
+  endif
+
+  call search('^\s*func\>', 'W'.a:flags)
+endfunction
+
 let b:did_ftplugin = 1
