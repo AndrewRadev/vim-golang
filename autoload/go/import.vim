@@ -1,6 +1,11 @@
-function! go#import#Switch(enabled, localname, path)
+function! go#import#Switch(enabled, localname, ...)
   let view = winsaveview()
-  let path = a:path
+  let path = join(a:000)
+
+  if path == ''
+    " try the word under the cursor
+    let path = expand('<cword>')
+  endif
 
   " Quotes are not necessary, so remove them if provided.
   if path[0] == '"'

@@ -38,7 +38,7 @@ endif
 
 command! -buffer Fmt call go#format#Run()
 command! -buffer -nargs=? -complete=customlist,go#complete#Package Drop     call go#import#Switch(0, '', <f-args>)
-command! -buffer -nargs=1 -complete=customlist,go#complete#Package Import   call go#import#Switch(1, '', <f-args>)
+command! -buffer -nargs=* -complete=customlist,go#complete#Package Import   call go#import#Switch(1, '', <f-args>)
 command! -buffer -nargs=* -complete=customlist,go#complete#Package ImportAs call go#import#Switch(1, <f-args>)
 map <buffer> <LocalLeader>f :Import fmt<CR>
 map <buffer> <LocalLeader>F :Drop fmt<CR>
