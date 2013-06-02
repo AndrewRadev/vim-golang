@@ -44,6 +44,9 @@ endif
 if !exists("go_highlight_trailing_whitespace_error")
   let go_highlight_trailing_whitespace_error = 1
 endif
+if !exists("go_highlight_string_error")
+  let go_highlight_string_error = 1
+endif
 
 syn case match
 
@@ -162,12 +165,12 @@ syn match       goImaginary         "\<\d\+[Ee][-+]\d\+i\>"
 hi def link     goImaginary         Number
 
 " Spaces after "[]"
-if go_highlight_array_whitespace_error != 0
+if go_highlight_array_whitespace_error
   syn match goSpaceError display "\(\[\]\)\@<=\s\+"
 endif
 
 " Spacing errors around the 'chan' keyword
-if go_highlight_chan_whitespace_error != 0
+if go_highlight_chan_whitespace_error
   " receive-only annotation on chan type
   syn match goSpaceError display "\(<-\)\@<=\s\+\(chan\>\)\@="
   " send-only annotation on chan type
@@ -177,7 +180,7 @@ if go_highlight_chan_whitespace_error != 0
 endif
 
 " Extra types commonly seen
-if go_highlight_extra_types != 0
+if go_highlight_extra_types
   syn match goExtraType /\<bytes\.\(Buffer\)\>/
   syn match goExtraType /\<io\.\(Reader\|Writer\|ReadWriter\|ReadWriteCloser\)\>/
   syn match goExtraType /\<reflect\.\(Kind\|Type\|Value\)\>/
@@ -185,17 +188,23 @@ if go_highlight_extra_types != 0
 endif
 
 " Space-tab error
-if go_highlight_space_tab_error != 0
+if go_highlight_space_tab_error
   syn match goSpaceError display " \+\t"me=e-1
 endif
 
 " Trailing white space error
-if go_highlight_trailing_whitespace_error != 0
+if go_highlight_trailing_whitespace_error
   syn match goSpaceError display excludenl "\s\+$"
 endif
 
-hi def link     goExtraType         Type
-hi def link     goSpaceError        Error
+" String errors
+if go_highlight_string_error
+  syn match goStringError display "'\w\{2,}'"hs=s+1,he=e-1
+endif
+
+hi def link goExtraType   Type
+hi def link goSpaceError  Error
+hi def link goStringError Error
 
 " Search backwards for a global declaration to start processing the syntax.
 "syn sync match goSync grouphere NONE /^\(const\|var\|type\|func\)\>/
