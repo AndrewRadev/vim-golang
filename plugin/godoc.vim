@@ -3,6 +3,10 @@
 " license that can be found in the LICENSE file.
 "
 " godoc.vim: Vim command to see godoc.
+"
+" TODO (2013-03-24) Smarter handling of modules
+"   - check import list for names
+"   - documentation for types/funcs?
 
 if exists("g:loaded_godoc")
   finish
@@ -36,7 +40,9 @@ function! s:GodocView()
   setlocal iskeyword+=:
   setlocal iskeyword-=-
 
-  nnoremap <buffer> <silent> K :Godoc<cr>
+  if !maparg('K') != ''
+    nnoremap <buffer> <silent> K :Godoc<cr>
+  endif
 
   au BufHidden <buffer> call let <SID>buf_nr = -1
 endfunction
