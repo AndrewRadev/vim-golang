@@ -6,7 +6,9 @@ function! go#textobj#Function(mode)
 
   if a:mode == 'a'
     normal! Va{V
-  else " a:mode == 'i'
+  elseif a:mode == 'i'
     normal! Vi{V
+  else
+    echoerr "Text object mode unknown: '".a:mode."'"
   endif
 endfunction
