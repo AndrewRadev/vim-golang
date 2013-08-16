@@ -1,9 +1,3 @@
-" Copyright 2011 The Go Authors. All rights reserved.
-" Use of this source code is governed by a BSD-style
-" license that can be found in the LICENSE file.
-"
-" indent/go.vim: Vim indent file for Go.
-"
 " TODO:
 " - function invocations split across lines
 " - general line splits (line ends in an operator)
