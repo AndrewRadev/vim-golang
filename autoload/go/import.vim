@@ -1,3 +1,4 @@
+" TODO (2013-09-21) Use go#FindImports()
 function! go#import#Switch(enabled, localname, ...)
   let view = winsaveview()
   let path = join(a:000)
