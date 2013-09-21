@@ -40,30 +40,37 @@ use the other tools, read ahead.
 
 This is a list of the provided commands:
 
-:Fmt ~
+:Fmt
 
     Filter the current Go buffer through gofmt. It tries to preserve cursor
     position and avoids replacing the buffer with stderr output.
 
-:Import {path} ~
+:Import {path}
 
     Import ensures that the provided package {path} is imported in the current
     Go buffer, using proper style and ordering. If {path} is already being
     imported, an error will be displayed and the buffer will be untouched.
 
-:ImportAs {localname} {path} ~
+:ImportAs {localname} {path}
 
     Same as Import, but uses a custom local name for the package.
 
-:Drop {path} ~
+:Drop {path}
 
     Remove the import line for the provided package {path}, if present in the
     current Go buffer.  If {path} is not being imported, an error will be
     displayed and the buffer will be untouched.
 
-:Godoc {package-name} ~
+:Godoc [package-name] [function-name]
 
-    Displays documentation from godoc for the given package name.
+    Displays documentation from godoc for the given {package-name}. If
+    [function-name] is also provided, shows documentation for this particular
+    function in this package.
+
+    If called without any arguments, tries to find a package or a
+    package-prefixed function, (for example, `fmt.Printf`), and makes a query
+    for that.
+
     Tab-completes with all known package names.
 
 Mappings:

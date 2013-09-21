@@ -36,9 +36,16 @@ This is a list of the provided commands:
   current Go buffer.  If {path} is not being imported, an error will be
   displayed and the buffer will be untouched.
 
-- `:Godoc {package-name}`
+- `:Godoc [package-name] [function-name]`
 
-  Displays documentation from godoc for the given package name.
+  Display documentation from godoc for the given `package-name`. If
+  `function-name` is also provided, shows documentation for this particular
+  function in this package.
+
+  If called without any arguments, tries to find a package or a
+  package-prefixed function, (for example, `fmt.Printf`), and makes a query
+  for that.
+
   Tab-completes with all known package names.
 
 Mappings:
