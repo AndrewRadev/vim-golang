@@ -72,7 +72,6 @@ function! s:SetupGodocBuffer(content)
   elseif bufwinnr(s:buf_nr) == -1
     belowright new
     execute s:buf_nr . 'buffer'
-    %delete _
   elseif bufwinnr(s:buf_nr) != bufwinnr('%')
     execute bufwinnr(s:buf_nr) . 'wincmd w'
   endif
@@ -84,6 +83,7 @@ function! s:SetupGodocBuffer(content)
   setlocal nobuflisted
 
   setlocal modifiable
+  %delete _
   call append(0, split(a:content, "\n"))
   $delete _
   setlocal nomodifiable
