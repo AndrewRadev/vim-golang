@@ -2,13 +2,14 @@ if exists("b:current_syntax")
   finish
 endif
 
+syn include @goTop syntax/go.vim
+
 syn case match
-syn match godocTitle "^\([A-Z]*\)$"
+syn match godocTitle "^\([A-Z ]\+\)$"
 
-command -nargs=+ HiLink hi def link <args>
+syn region goFunctionLine   start=+^\zefunc+ end=+$+   contains=@goTop oneline
+syn region goTypeDefinition start=+^\zetype+ end=+^}$+ contains=@goTop keepend
 
-HiLink godocTitle Title
-
-delcommand HiLink
+hi def link godocTitle Statement
 
 let b:current_syntax = "godoc"
