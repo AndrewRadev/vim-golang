@@ -2,6 +2,13 @@ This project is my own fork of Go's Vim runtime files. I intend to add some
 additional features to it that won't make their way upstream, but which you
 may find useful.
 
+Some notable changes:
+
+- `:Godoc` is smarter, and can now look for a particular symbol (function call)
+  as well as packages.
+- Minimal syntax highlighting for the `godoc` buffer.
+- Function text objects
+
 For the official runtime files, straight from the Golang project, go to
 [golang.org/misc/vim/](http://golang.org/misc/vim/).
 
