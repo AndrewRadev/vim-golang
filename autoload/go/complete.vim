@@ -1,49 +1,8 @@
 " This file provides a utility function that performs auto-completion of
 " package names, for use by other commands.
 
-let s:goos   = $GOOS
-let s:goarch = $GOARCH
-
-if len(s:goos) == 0
-  if exists('g:golang_goos')
-    let s:goos = g:golang_goos
-  elseif has('win32') || has('win64')
-    let s:goos = 'windows'
-  elseif has('macunix')
-    let s:goos = 'darwin'
-  else
-    let s:goos = '*'
-  endif
-endif
-
-if len(s:goarch) == 0
-  if exists('g:golang_goarch')
-    let s:goarch = g:golang_goarch
-  else
-    let s:goarch = '*'
-  endif
-endif
-
 function! go#complete#Package(ArgLead, CmdLine, CursorPos)
-  let dirs = []
-
-  if executable('go')
-    let goroot = substitute(system('go env GOROOT'), '\n', '', 'g')
-    if v:shell_error
-      echo '''go env GOROOT'' failed'
-    endif
-  else
-    let goroot = $GOROOT
-  endif
-
-  if len(goroot) != 0 && isdirectory(goroot)
-    let dirs += [ goroot ]
-  endif
-
-  let workspaces = split($GOPATH, ':')
-  if workspaces != []
-    let dirs += workspaces
-  endif
+  let dirs = go#Dirs()
 
   if len(dirs) == 0
     " should not happen
@@ -52,7 +11,7 @@ function! go#complete#Package(ArgLead, CmdLine, CursorPos)
 
   let ret = {}
   for dir in dirs
-    let roots = split(expand(dir . '/pkg/' . s:goos . '_' . s:goarch), "\n")
+    let roots = split(expand(dir . '/pkg/' . go#env#Os() . '_' . go#env#Arch()), "\n")
 
     for root in roots
       for i in split(globpath(root, a:ArgLead.'*'), "\n")

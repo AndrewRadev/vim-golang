@@ -1,3 +1,19 @@
+function! go#Dirs()
+  let dirs   = []
+  let goroot = go#env#Root()
+
+  if len(goroot) != 0 && isdirectory(goroot)
+    let dirs += [ goroot ]
+  endif
+
+  let workspaces = split($GOPATH, ':')
+  if workspaces != []
+    let dirs += workspaces
+  endif
+
+  return dirs
+endfunction
+
 function! go#FindImports()
   let packages = {}
 
