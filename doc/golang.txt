@@ -97,6 +97,9 @@ Mappings:
 The backslash is the default |maplocalleader|, so it is possible that your vim
 is set to use a different character (:help maplocalleader).
 
+The built-in |gf| mapping works correctly for imports, along with all related
+ones, like |CTRL-W_f|.
+
 
 ==============================================================================
 SETTINGS                                                       *golang-settings*

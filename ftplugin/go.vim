@@ -2,6 +2,8 @@ if exists("b:did_ftplugin")
   finish
 endif
 
+set includeexpr=go#open#Find(v:fname)
+
 command! -buffer A  exe 'edit '           . go#TestFile()
 command! -buffer AE exe 'edit '           . go#TestFile()
 command! -buffer AS exe 'split '          . go#TestFile()
