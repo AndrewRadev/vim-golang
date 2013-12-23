@@ -40,6 +40,20 @@ use the other tools, read ahead.
 
 This is a list of the provided commands:
 
+:A
+:AE
+:AS
+:AV
+:AT
+:AD
+
+    These commands were picked to mimic Michael Sharpe's a.vim. Briefly, they
+    edit the "alternate" file, in either the same window (:A and :AE), a new
+    split window (:AS), a new vertically split window (:AV), a new tab (:AT),
+    or read it into the current buffer (:AD).
+
+    In go's case, the "alternate" file would always be the test file.
+
 :Fmt
 
     Filter the current Go buffer through gofmt. It tries to preserve cursor

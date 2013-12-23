@@ -2,6 +2,13 @@ if exists("b:did_ftplugin")
   finish
 endif
 
+command! -buffer A  exe 'edit '           . go#TestFile()
+command! -buffer AE exe 'edit '           . go#TestFile()
+command! -buffer AS exe 'split '          . go#TestFile()
+command! -buffer AV exe 'vertical split ' . go#TestFile()
+command! -buffer AT exe 'tabnew '         . go#TestFile()
+command! -buffer AD exe 'read '           . go#TestFile()
+
 command! -buffer Fmt call go#format#Run()
 command! -buffer -nargs=? -complete=customlist,go#complete#Package Drop     call go#import#Switch(0, '', <f-args>)
 command! -buffer -nargs=* -complete=customlist,go#complete#Package Import   call go#import#Switch(1, '', <f-args>)

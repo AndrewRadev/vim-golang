@@ -51,3 +51,7 @@ function! go#FindImports()
 
   return packages
 endfunction
+
+function! go#TestFile()
+  return expand('%:r').'_test.go'
+endfunction
