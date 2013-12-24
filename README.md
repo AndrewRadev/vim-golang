@@ -8,6 +8,8 @@ Some notable changes:
   as well as packages.
 - Minimal syntax highlighting for the `godoc` buffer.
 - Function text objects
+- The `gf` family of mappings work for packages
+- The `:A` command opens the related test file
 
 For the official runtime files, straight from the Golang project, go to
 [golang.org/misc/vim/](http://golang.org/misc/vim/).
@@ -21,6 +23,14 @@ edit Go code. You should get the basic benefits automatically. If you want to
 use the other tools, read ahead.
 
 This is a list of the provided commands:
+- `:A`, `:AE`, `:AS`, `:AV`, `:AT`, `:AD`
+
+  These commands were picked to mimic Michael Sharpe's a.vim. Briefly, they
+  edit the "alternate" file, in either the same window (`:A` and `:AE`), a
+  new split window (`:AS`), a new vertically split window (`:AV`), a new tab
+  (`:AT`), or read it into the current buffer (`:AD`).
+
+  In go's case, the "alternate" file would always be the test file.
 
 - `:Fmt`
 
@@ -63,6 +73,9 @@ Mappings:
 
 The backslash is the default `maplocalleader`, so it is possible that your vim
 is set to use a different character (`:help maplocalleader`).
+
+The built-in `gf` mapping works correctly for imports, along with all related
+ones, like `<c-w>f`.
 
 ## Settings
 
