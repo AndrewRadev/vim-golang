@@ -10,7 +10,7 @@ let b:did_indent = 1
 " C indentation is too far off useful, mainly due to Go's := operator.
 " Let's just define our own.
 setlocal nolisp
-setlocal autoindent
+setlocal noautoindent
 setlocal indentexpr=GoIndent(v:lnum)
 setlocal indentkeys+=<:>,0=},0=)
 
@@ -19,30 +19,28 @@ if exists("*GoIndent")
 endif
 
 function! GoIndent(lnum)
+  let thislnum = a:lnum
   let prevlnum = prevnonblank(a:lnum-1)
   if prevlnum == 0
     " top of file
     return 0
   endif
 
-  " grab the previous and current line, stripping comments.
-  let prevl = substitute(getline(prevlnum), '//.*$', '', '')
-  let thisl = substitute(getline(a:lnum), '//.*$', '', '')
-  let previ = indent(prevlnum)
+  let previ       = indent(prevlnum)
+  let eol_pattern = '\%($\|//.*$\)'
+  let ind         = previ
 
-  let ind = previ
-
-  if prevl =~ '[({]\s*$'
+  if s:Match(prevlnum, '[({]\s*'.eol_pattern)
     " previous line opened a block
     let ind += &sw
   endif
-  if prevl =~# '^\s*\(case .*\|default\):$'
+  if s:Match(prevlnum, '^\s*\(case .*\|default\):'.eol_pattern)
     " previous line is part of a switch statement
     let ind += &sw
   endif
   " TODO: handle if the previous line is a label.
 
-  if thisl =~ '^\s*[)}]'
+  if s:Match(thislnum, '^\s*[)}]')
     " this line closed a block
     let ind -= &sw
   endif
@@ -51,9 +49,34 @@ function! GoIndent(lnum)
   " We want to outdent if it's part of a switch ("case foo:" or "default:").
   " We ignore trying to deal with jump labels because (a) they're rare, and
   " (b) they're hard to disambiguate from a composite literal key.
-  if thisl =~# '^\s*\(case .*\|default\):$'
+  if s:Match(thislnum, '^\s*\(case .*\|default\):$'.eol_pattern)
     let ind -= &sw
   endif
 
   return ind
+endfunction
+
+function s:Match(lnum, regex)
+  let line   = getline(a:lnum)
+  let offset = match(line, '\C'.a:regex)
+  let col    = offset + 1
+
+  while offset > -1 && s:IsInStringOrComment(a:lnum, col)
+    let offset = match(line, '\C'.a:regex, offset + 1)
+    let col = offset + 1
+  endwhile
+
+  if offset > -1
+    return col
+  else
+    return 0
+  endif
+endfunction
+
+" Check if the character at lnum:col is inside a string, comment, or is ascii.
+" TODO (2013-12-24) An object wrapping the line, with query methods?
+function s:IsInStringOrComment(lnum, col)
+  let pattern = '\<goString\|goComment\>'
+
+  return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ pattern
 endfunction
