@@ -1,27 +1,28 @@
-function! go#format#Run()
+function! go#format#Run(options)
+  let silent = get(a:options, 'silent', 0)
+  let write  = get(a:options, 'write', 0)
+
   let view = winsaveview()
-  silent %!gofmt
-  if v:shell_error
-    let errors = []
-    for line in getline(1, line('$'))
-      let tokens = matchlist(line, '^\(.\{-}\):\(\d\+\):\(\d\+\)\s*\(.*\)')
-      if !empty(tokens)
-        call add(errors, {
-              \ "filename": @%,
-              \ "lnum":     tokens[2],
-              \ "col":      tokens[3],
-              \ "text":     tokens[4]
-              \ })
-      endif
-    endfor
-    if empty(errors)
-      % | " Couldn't detect gofmt error format, output errors
-    endif
-    undo
-    if !empty(errors)
-      call setloclist(0, errors, 'r')
-    endif
-    echohl Error | echomsg "Gofmt returned error" | echohl None
+
+  let diff = system('gofmt -d '.expand('%'))
+  if diff =~ '^\_s*$'
+    " no changes, don't do anything
+    return
+  elseif v:shell_error && silent
+    " ignore the error
+    return
+  elseif v:shell_error
+    let error_lines = split(diff, "\n")
+    let errors      = []
+
+    let saved_errorformat = &l:errorformat
+    let &errorformat = '%f:%l:%c%m'
+    lexpr error_lines
+    let &l:errorformat = saved_errorformat
+    lopen
+  else
+    silent %!gofmt
   endif
+
   call winrestview(view)
 endfunction

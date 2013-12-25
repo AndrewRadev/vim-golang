@@ -11,7 +11,12 @@ command! -buffer AV exe 'vertical split ' . go#TestFile()
 command! -buffer AT exe 'tabnew '         . go#TestFile()
 command! -buffer AD exe 'read '           . go#TestFile()
 
-command! -buffer Fmt call go#format#Run()
+" TODO (2013-12-24) Consider providing options to the command
+command! -buffer -bang Fmt call go#format#Run({
+      \   'silent': ('<bang>' == '!' ? 1 : 0),
+      \   'write':  ('<bang>' == '!' ? 1 : 0),
+      \ })
+
 command! -buffer -nargs=? -complete=customlist,go#complete#Package Drop     call go#import#Switch(0, '', <f-args>)
 command! -buffer -nargs=* -complete=customlist,go#complete#Package Import   call go#import#Switch(1, '', <f-args>)
 command! -buffer -nargs=* -complete=customlist,go#complete#Package ImportAs call go#import#Switch(1, <f-args>)
