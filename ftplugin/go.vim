@@ -39,4 +39,24 @@ function! s:Section(flags, mode)
   call search('^\s*func\>', 'W'.a:flags)
 endfunction
 
+command! -buffer -nargs=* Play call s:Play(<f-args>)
+function! s:Play(...)
+  if a:0 == 0
+    " We should try to post to the playground, but do nothing for now
+    return
+  endif
+
+  let url = a:1.'.go'
+  let output = system('curl -s '.shellescape(url))
+  if v:shell_error
+    echoerr output
+    return
+  endif
+
+  let saved_view = winsaveview()
+  %delete _
+  call setline(1, split(output, "\n"))
+  call winrestview(saved_view)
+endfunction
+
 let b:did_ftplugin = 1
