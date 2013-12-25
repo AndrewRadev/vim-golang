@@ -1,6 +1,9 @@
 " TODO:
 " - function invocations split across lines
 " - general line splits (line ends in an operator)
+"
+" - Vimrunner tests
+"
 
 if exists("b:did_indent")
   finish
@@ -29,6 +32,13 @@ function! GoIndent(lnum)
   let previ       = indent(prevlnum)
   let eol_pattern = '\%($\|//.*$\)'
   let ind         = previ
+
+  " TODO (2013-12-24) Handle MSL -- hanging ) at EOL. Poke around in matchparen.vim
+  "
+  " if s:IsInStringOrComment(thislnum, 1)
+  "   " we shouldn't touch its indentation
+  "   return -1
+  " endif
 
   if s:Match(prevlnum, '[({]\s*'.eol_pattern)
     " previous line opened a block
@@ -73,10 +83,10 @@ function s:Match(lnum, regex)
   endif
 endfunction
 
-" Check if the character at lnum:col is inside a string, comment, or is ascii.
+" Check if the character at lnum:col is inside a string or comment
 " TODO (2013-12-24) An object wrapping the line, with query methods?
 function s:IsInStringOrComment(lnum, col)
-  let pattern = '\<goString\|goComment\>'
+  let pattern = '\<goString\|goRawString\|goComment\>'
 
   return synIDattr(synID(a:lnum, a:col, 1), 'name') =~ pattern
 endfunction
