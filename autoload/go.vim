@@ -53,5 +53,11 @@ function! go#FindImports()
 endfunction
 
 function! go#TestFile()
-  return expand('%:r').'_test.go'
+  let basename = expand('%:r')
+
+  if basename =~# '_test$'
+    return substitute(basename, '_test$', '', '').'.go'
+  else
+    return basename.'_test.go'
+  endif
 endfunction
