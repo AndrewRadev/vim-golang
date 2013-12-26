@@ -36,12 +36,10 @@ This is a list of the provided commands:
 - `:Fmt`
 
   Filter the current Go buffer through gofmt. It tries to preserve cursor
-  position and avoids replacing the buffer with stderr output.
-
-  Populates the location list with any errors, unless given the `silent` option.
-
-  If given the `write` option, writes the buffer as well. This can be useful
-  for an auto-gofmt after saving the buffer.
+  position and avoids replacing the buffer with stderr output. Populates the
+  location list with any errors, unless given the `silent` option. If given
+  the `write` option, writes the buffer as well. This can be useful for an
+  auto-gofmt after saving the buffer.
 
   So, if you want to auto-gofmt after saving, and you're okay with errors
   popping up in the location list:
