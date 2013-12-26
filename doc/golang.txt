@@ -57,8 +57,27 @@ This is a list of the provided commands:
 :Fmt
 
     Filter the current Go buffer through gofmt. It tries to preserve cursor
-    position and avoids replacing the buffer with stderr output.
+    position and avoids replacing the buffer with stderr output. Populates the
+    location list with any errors, unless given the `silent` option. If given
+    the `write` option, writes the buffer as well. This can be useful for an
+    auto-gofmt after saving the buffer.
 
+    So, if you want to auto-gofmt after saving, and you're okay with errors
+    popping up in the location list, put this in your ftplugin/go.vim:
+>
+        augroup golang
+          autocmd!
+          autocmd BufWritePost <buffer> :Fmt write
+        augroup END
+<
+    If you want to keep it loose and plan to take care of errors at your own
+    pace, try:
+>
+        augroup golang
+          autocmd!
+          autocmd BufWritePost <buffer> :Fmt silent write
+        augroup END
+<
 :Import {path}
 
     Import ensures that the provided package {path} is imported in the current

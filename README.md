@@ -42,14 +42,20 @@ This is a list of the provided commands:
   auto-gofmt after saving the buffer.
 
   So, if you want to auto-gofmt after saving, and you're okay with errors
-  popping up in the location list:
+  popping up in the location list, put this in your ftplugin/go.vim:
 
-        autocmd BufWritePost <buffer> :Fmt write
+        augroup golang
+          autocmd!
+          autocmd BufWritePost <buffer> :Fmt write
+        augroup END
 
   If you want to keep it loose and plan to take care of errors at your own
   pace, try:
 
-        autocmd BufWritePost <buffer> :Fmt silent write
+        augroup golang
+          autocmd!
+          autocmd BufWritePost <buffer> :Fmt silent write
+        augroup END
 
 - `:Import {path}`
 
