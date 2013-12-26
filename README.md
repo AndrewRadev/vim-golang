@@ -10,6 +10,7 @@ Some notable changes:
 - Function text objects
 - The `gf` family of mappings work for packages
 - The `:A` command opens the related test file
+- `:Fmt` can be given the `silent` and `write` arguments for different behaviour
 
 For the official runtime files, straight from the Golang project, go to
 [golang.org/misc/vim/](http://golang.org/misc/vim/).
@@ -36,6 +37,21 @@ This is a list of the provided commands:
 
   Filter the current Go buffer through gofmt. It tries to preserve cursor
   position and avoids replacing the buffer with stderr output.
+
+  Populates the location list with any errors, unless given the `silent` option.
+
+  If given the `write` option, writes the buffer as well. This can be useful
+  for an auto-gofmt after saving the buffer.
+
+  So, if you want to auto-gofmt after saving, and you're okay with errors
+  popping up in the location list:
+
+        autocmd BufWritePost <buffer> :Fmt write
+
+  If you want to keep it loose and plan to take care of errors at your own
+  pace, try:
+
+        autocmd BufWritePost <buffer> :Fmt silent write
 
 - `:Import {path}`
 

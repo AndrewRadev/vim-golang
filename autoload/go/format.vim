@@ -1,28 +1,51 @@
-function! go#format#Run(options)
-  let silent = get(a:options, 'silent', 0)
-  let write  = get(a:options, 'write', 0)
+function! go#format#Run(...)
+  let options = a:000
 
-  let view = winsaveview()
+  " Do nothing in case of errors
+  let silent = (index(options, 'silent') >= 0)
 
-  let diff = system('gofmt -d '.expand('%'))
-  if diff =~ '^\_s*$'
-    " no changes, don't do anything
-    return
-  elseif v:shell_error && silent
-    " ignore the error
-    return
-  elseif v:shell_error
-    let error_lines = split(diff, "\n")
-    let errors      = []
+  " Always write the file afterwards
+  let write = (index(options, 'write') >= 0)
 
-    let saved_errorformat = &l:errorformat
-    let &errorformat = '%f:%l:%c%m'
-    lexpr error_lines
-    let &l:errorformat = saved_errorformat
-    lopen
-  else
-    silent %!gofmt
-  endif
+  try
+    let view = winsaveview()
 
-  call winrestview(view)
+    " Filter the buffer contents through gofmt
+    " Note: should line endings vary depending on OS?
+    let diff = system('gofmt -d', join(getbufline('%', 0, '$'), "\n")."\n")
+
+    if diff =~ '^\_s*$'
+      " no changes, don't do anything
+      return
+    elseif v:shell_error && silent
+      " ignore the error
+      return
+    elseif v:shell_error
+      " `gofmt -d` got its output from stdin, we should adjust a bit
+      let diff = substitute(diff, '<standard input>', expand('%'), 'g')
+
+      let error_lines = split(diff, "\n")
+      let errors      = []
+
+      " Read errors in the location list
+      let saved_errorformat = &l:errorformat
+      let &errorformat = '%f:%l:%c%m'
+      lexpr error_lines
+      let &l:errorformat = saved_errorformat
+      lopen
+    else
+      " No errors, there were changes, trigger a full gofmt
+      silent %!gofmt
+    endif
+  finally
+    if write
+      write
+    endif
+
+    call winrestview(view)
+  endtry
+endfunction
+
+function! go#format#Complete(...)
+  return join(['silent', 'write'], "\n")
 endfunction
