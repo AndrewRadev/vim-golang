@@ -64,4 +64,6 @@ function! s:Play(...)
   call winrestview(saved_view)
 endfunction
 
-let b:did_ftplugin = 1
+let b:did_ftplugin           = 1
+let b:did_ftplugin_go_fmt    = 1
+let b:did_ftplugin_go_import = 1
