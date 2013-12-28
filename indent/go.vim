@@ -59,7 +59,7 @@ function! GoIndent(lnum)
   " We want to outdent if it's part of a switch ("case foo:" or "default:").
   " We ignore trying to deal with jump labels because (a) they're rare, and
   " (b) they're hard to disambiguate from a composite literal key.
-  if s:Match(thislnum, '^\s*\(case .*\|default\):$'.eol_pattern)
+  if s:Match(thislnum, '^\s*\(case .*\|default\):'.eol_pattern)
     let ind -= &sw
   endif
 
