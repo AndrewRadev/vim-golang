@@ -15,6 +15,11 @@ function! go#indent#Main(lnum)
   let prevline = go#indent#NewLine(prevlnum)
   let thisline = go#indent#NewLine(thislnum)
 
+  if thisline.MatchSyntax(1, 'string', 'comment')
+    " we shouldn't touch its indentation
+    return -1
+  endif
+
   if empty(prevline.Parent())
     " no parent, the previous line is the one we care for
     let ind = prevline.Indent()
@@ -22,13 +27,6 @@ function! go#indent#Main(lnum)
     " we should use the parent indent as base
     " TODO (2013-12-28) what else do we need the "parent" for?
     let ind = prevline.Parent().Indent()
-  endif
-
-  " TODO (2013-12-24) Handle MSL -- hanging ) at EOL. Poke around in matchparen.vim
-  "
-  if thisline.MatchSyntax(1, 'string', 'comment')
-    " we shouldn't touch its indentation
-    return -1
   endif
 
   if prevline.Match('[({]\s*'.s:eol_pattern)
