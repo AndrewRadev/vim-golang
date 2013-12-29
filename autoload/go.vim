@@ -61,3 +61,20 @@ function! go#TestFile()
     return basename.'_test.go'
   endif
 endfunction
+
+function! go#FindFile(fname)
+  let dirs = []
+  for dir in go#Dirs()
+    call add(dirs, dir.'/src/')
+    call add(dirs, dir.'/src/pkg/')
+  endfor
+
+  let file_glob = globpath(join(dirs, ','), a:fname)
+  let files = split(file_glob, "\n")
+
+  if empty(files)
+    return ''
+  else
+    return files[0]
+  endif
+endfunction
