@@ -39,7 +39,7 @@ function! go#format#Run(...)
     endif
   finally
     if write
-      write
+      update
     endif
 
     call winrestview(view)
