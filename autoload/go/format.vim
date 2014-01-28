@@ -7,12 +7,20 @@ function! go#format#Run(...)
   " Always write the file afterwards
   let write = (index(options, 'write') >= 0)
 
+  " Provide the -s flag to gofmt
+  let simplify = (index(options, 'simplify') >= 0)
+
   try
     let view = winsaveview()
 
+    let gofmt = 'gofmt'
+    if simplify
+      let gofmt .= ' -s'
+    endif
+
     " Filter the buffer contents through gofmt
     " Note: should line endings vary depending on OS?
-    let diff = system('gofmt -d', join(getbufline('%', 0, '$'), "\n")."\n")
+    let diff = system(gofmt.' -d', join(getbufline('%', 0, '$'), "\n")."\n")
 
     if diff =~ '^\_s*$'
       " no changes, don't do anything
@@ -35,7 +43,7 @@ function! go#format#Run(...)
       lopen
     else
       " No errors, there were changes, trigger a full gofmt
-      silent %!gofmt
+      exe 'silent %!'.gofmt
     endif
   finally
     if write
@@ -47,5 +55,5 @@ function! go#format#Run(...)
 endfunction
 
 function! go#format#Complete(...)
-  return join(['silent', 'write'], "\n")
+  return join(['silent', 'write', 'simplify'], "\n")
 endfunction
