@@ -2,6 +2,10 @@ if exists("b:did_ftplugin")
   finish
 endif
 
+if !exists("g:gofmt_command")
+    let g:gofmt_command = "gofmt"
+endif
+
 set includeexpr=go#FindFile(v:fname)
 
 command! -buffer A  exe 'edit '           . go#TestFile()
