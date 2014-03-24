@@ -9,10 +9,12 @@ command! -nargs=* -complete=customlist,go#complete#Package Godoc :call s:Godoc(<
 nnoremap <silent> <Plug>(godoc-keyword) :<c-u>call <SID>Godoc()<cr>
 
 function! s:Godoc(...)
+  let godoc = 'godoc -goroot='.go#env#Root()
+
   if a:0 > 0
     " we have a query
     let query = a:1
-    let command = 'godoc '.query
+    let command = godoc.' '.query
 
     if query == ''
       return
@@ -28,7 +30,7 @@ function! s:Godoc(...)
 
     if has_key(packages, query)
       " then the query is a package, make it directly
-      let command = 'godoc '.query
+      let command = godoc.' '.query
     else
       " the query is something else, look for a package around it
       let line            = getline('.')
@@ -49,9 +51,9 @@ function! s:Godoc(...)
       endif
 
       if parent_package != ''
-        let command = 'godoc '.parent_package.' '.query
+        let command = godoc.' '.parent_package.' '.query
       else
-        let command = 'godoc -q '.query
+        let command = godoc.' -q '.query
       endif
     endif
   endif
