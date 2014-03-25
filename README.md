@@ -10,7 +10,7 @@ Some notable changes:
 - Function text objects
 - The `gf` family of mappings work for packages
 - The `:A` command opens the related test file
-- `:Fmt` can be given the `silent` and `write` arguments for different behaviour
+- `:Fmt` can be given several arguments that change its behaviour
 
 For the official runtime files, straight from the Golang project, go to
 [golang.org/misc/vim/](http://golang.org/misc/vim/).
@@ -18,119 +18,28 @@ For the official runtime files, straight from the Golang project, go to
 ## Usage
 
 This plugin provides filetype detection, syntax highlighting and indentation
-for the Go programming language. It also includes some useful tools for
-working with Go code. For the most basic usage, just install the plugin and
-edit Go code. You should get the basic benefits automatically. If you want to
-use the other tools, read ahead.
+for the Go programming language. It also includes some useful tools for working
+with Go code.
 
-This is a list of the provided commands:
-- `:A`, `:AE`, `:AS`, `:AV`, `:AT`, `:AD`
+For the most basic usage, just install the plugin and edit Go code. You should
+get the basic benefits automatically.
 
-  These commands were picked to mimic Michael Sharpe's a.vim. Briefly, they
-  edit the "alternate" file, in either the same window (`:A` and `:AE`), a
-  new split window (`:AS`), a new vertically split window (`:AV`), a new tab
-  (`:AT`), or read it into the current buffer (`:AD`).
+If you want to use the other tools, please take a look at the documentation in
+`doc/golang.txt`, or within Vim itself with `:help golang`.
 
-  In go's case, the "alternate" file would always be the test file.
+## Installation
 
-- `:Fmt`
+There are several ways to install the plugin. The recommended one is by using
+Tim Pope's [pathogen](http://www.vim.org/scripts/script.php?script_id=2332). In
+that case, you can clone the plugin's git repository like so:
 
-  Filter the current Go buffer through gofmt. It tries to preserve cursor
-  position and avoids replacing the buffer with stderr output. Populates the
-  location list with any errors, unless given the `silent` option. If given
-  the `write` option, writes the buffer as well. This can be useful for an
-  auto-gofmt after saving the buffer.
+    git clone git://github.com/AndrewRadev/vim-golang.git ~/.vim/bundle/golang
 
-  So, if you want to auto-gofmt after saving, and you're okay with errors
-  popping up in the location list, put this in your ftplugin/go.vim:
+If your vim configuration is under git version control, you could also set up
+the repository as a submodule, which would allow you to update more easily. The
+command is (provided you're in `~/.vim`):
 
-        augroup golang
-          autocmd!
-          autocmd BufWritePost <buffer> :Fmt write
-        augroup END
+    git submodule add git://github.com/AndrewRadev/vim-golang.git bundle/golang
 
-  If you want to keep it loose and plan to take care of errors at your own
-  pace, try:
-
-        augroup golang
-          autocmd!
-          autocmd BufWritePost <buffer> :Fmt silent write
-        augroup END
-
-- `:Import {path}`
-
-  Import ensures that the provided package {path} is imported in the current
-  Go buffer, using proper style and ordering. If {path} is already being
-  imported, an error will be displayed and the buffer will be untouched.
-
-- `:ImportAs {localname} {path}`
-
-  Same as Import, but uses a custom local name for the package.
-
-- `:Drop {path}`
-
-  Remove the import line for the provided package {path}, if present in the
-  current Go buffer.  If {path} is not being imported, an error will be
-  displayed and the buffer will be untouched.
-
-- `:Godoc [package-name] [function-name]`
-
-  Display documentation from godoc for the given `package-name`. If
-  `function-name` is also provided, shows documentation for this particular
-  function in this package.
-
-  If called without any arguments, tries to find a package or a
-  package-prefixed function, (for example, `fmt.Printf`), and makes a query
-  for that.
-
-  Tab-completes with all known package names.
-
-Mappings:
-
-- `\f` -  Runs :Import fmt
-- `\F` -  Runs :Drop fmt
-- `if`, `af` - "Function" text objects
-
-The backslash is the default `maplocalleader`, so it is possible that your vim
-is set to use a different character (`:help maplocalleader`).
-
-The built-in `gf` mapping works correctly for imports, along with all related
-ones, like `<c-w>f`.
-
-## Settings
-
-These are the variables that control the behaviour of the plugin. You can
-write:
-
-``` vim
-let OPTION_NAME = 0
-```
-
-in your `~/.vimrc` file to disable particular options. You can also write:
-
-``` vim
-let OPTION_NAME = 1
-```
-
-to enable particular options. At present, all options default to on.
-
-- `go_highlight_array_whitespace_error`
-
-    Highlights white space after "[]".
-
-- `go_highlight_chan_whitespace_error`
-
-    Highlights white space around the communications operator that don't follow
-    the standard style.
-
-- `go_highlight_extra_types`
-
-    Highlights commonly used library types (io.Reader, etc.).
-
-- `go_highlight_space_tab_error`
-
-    Highlights instances of tabs following spaces.
-
-- `go_highlight_trailing_whitespace_error`
-
-    Highlights trailing white space.
+Another way is to simply copy all the essential directories inside the ~/.vim
+directory: autoload, doc, ftdetect, ftplugin, indent, plugin, syntax.
