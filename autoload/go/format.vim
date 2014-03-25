@@ -13,7 +13,7 @@ function! go#format#Run(...)
   try
     let view = winsaveview()
 
-    let gofmt = 'gofmt'
+    let gofmt = g:gofmt_command
     if simplify
       let gofmt .= ' -s'
     endif

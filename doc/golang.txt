@@ -155,6 +155,12 @@ go_highlight_trailing_whitespace_error ~
 
     Highlights trailing white space.
 
+*g:gofmt_command*
+
+Set the command to use when calling |Fmt|:
+
+   let g:gofmt_command = 'gofmt'
+
 ==============================================================================
 ISSUES                                                           *golang-issues*
 
