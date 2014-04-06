@@ -12,7 +12,9 @@ function! go#indent#Main(lnum)
     return 0
   endif
 
-  if thisline.MatchSyntax(1, 'string', 'comment')
+  " TODO (2014-04-06) This is very iffy, needs a better heuristic
+  if thisline.MatchSyntax(1, 'string', 'comment') &&
+        \ thisline.MatchSyntax(col('$'), 'string', 'comment')
     " we shouldn't touch its indentation
     return -1
   endif
