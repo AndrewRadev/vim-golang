@@ -1,6 +1,12 @@
-This project is my own fork of Go's Vim runtime files. I intend to add some
-additional features to it that won't make their way upstream, but which you
-may find useful.
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
+This project is my own fork of Go's Vim runtime files. I intended to add some
+additional features to it that won't make their way upstream, but which you may
+find useful.
+
+Unfortunately, I don't write a whole of Go these days, so I stopped working on
+it and don't intend to continue. I'm leaving to code as potential inspiration
+for somebody else :).
 
 Some notable changes:
 
